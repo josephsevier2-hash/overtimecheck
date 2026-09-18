@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Time Card Calculator - OvertimeCheck</title>
+
+    <meta name="description"
+          content="Free time card calculator. Calculate daily and weekly work hours, including unpaid breaks.">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header-inner {
+            max-width: 1000px;
+            margin: auto;
+            padding: 18px 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            margin-left: 18px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .calculator {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .day {
+            border-bottom: 1px solid #ddd;
+            padding: 18px 0;
+        }
+
+        .day:last-child {
+            border-bottom: none;
+        }
+
+        .day-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+
+            border: 1px solid #ccc;
+            border-radius: 6px;
+
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 7px;
+
+            background: #222;
+            color: white;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .clear {
+            background: #eee;
+            color: #222;
+        }
+
+        .results {
+            display: none;
+
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #f1f3f5;
+            border-radius: 8px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .info {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+
+            .header-inner {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-inner">
+
+        <div class="logo">
+            OvertimeCheck
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Overtime
+            </a>
+
+            <a href="timecard.html">
+                Time Card
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+
+<section class="hero">
+
+    <h1>
+        Free Time Card Calculator
+    </h1>
+
+    <p>
+        Calculate your daily and weekly work hours.
+    </p>
+
+</section>
+
+
+
+<section class="calculator">
+
+
+    <div class="day">
+
+        <div class="day-title">
+            Monday
+        </div>
+
+        <div class="inputs">
+
+            <div>
+                <label>Start</label>
+                <input type="time" id="monStart">
+            </div>
+
+            <div>
+                <label>End</label>
+                <input type="time" id="monEnd">
+            </div>
+
+            <div>
+                <label>Unpaid Break (minutes)</label>
+                <input type="number" id="monBreak" value="0" min="0">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="day">
+
+        <div class="day-title">
+            Tuesday
+        </div>
+
+        <div class="inputs">
+
+            <div>
+                <label>Start</label>
+                <input type="time" id="tueStart">
+            </div>
+
+            <div>
+                <label>End</label>
+                <input type="time" id="tueEnd">
+            </div>
+
+            <div>
+                <label>Unpaid Break (minutes)</label>
+                <input type="number" id="tueBreak" value="0" min="0">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="day">
+
+        <div class="day-title">
+            Wednesday
+        </div>
+
+        <div class="inputs">
+
+            <div>
+                <label>Start</label>
+                <input type="time" id="wedStart">
+            </div>
+
+            <div>
+                <label>End</label>
+                <input type="time" id="wedEnd">
+            </div>
+
+            <div>
+                <label>Unpaid Break (minutes)</label>
+                <input type="number" id="wedBreak" value="0" min="0">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="day">
+
+        <div class="day-title">
+            Thursday
+        </div>
+
+        <div class="inputs">
+
+            <div>
+                <label>Start</label>
+                <input type="time" id="thuStart">
+            </div>
+
+            <div>
+                <label>End</label>
+                <input type="time" id="thuEnd">
+            </div>
+
+            <div>
+                <label>Unpaid Break (minutes)</label>
+                <input type="number" id="thuBreak" value="0" min="0">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="day">
+
+        <div class="day-title">
+            Friday
+        </div>
+
+        <div class="inputs">
+
+            <div>
+                <label>Start</label>
+                <input type="time" id="friStart">
+            </div>
+
+            <div>
+                <label>End</label>
+                <input type="time" id="friEnd">
+            </div>
+
+            <div>
+                <label>Unpaid Break (minutes)</label>
+                <input type="number" id="friBreak" value="0" min="0">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <button onclick="calculateHours()">
+        Calculate Hours
+    </button>
+
+
+    <button class="clear" onclick="clearForm()">
+        Clear
+    </button>
+
+
+
+    <div class="results" id="results">
+
+        <div class="result-row">
+
+            <span>
+                Monday
+            </span>
+
+            <span id="monResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+        <div class="result-row">
+
+            <span>
+                Tuesday
+            </span>
+
+            <span id="tueResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+        <div class="result-row">
+
+            <span>
+                Wednesday
+            </span>
+
+            <span id="wedResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+        <div class="result-row">
+
+            <span>
+                Thursday
+            </span>
+
+            <span id="thuResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+        <div class="result-row">
+
+            <span>
+                Friday
+            </span>
+
+            <span id="friResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+        <div class="result-row">
+
+            <span>
+                Total Weekly Hours
+            </span>
+
+            <span id="totalResult">
+                0.00 hours
+            </span>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<section class="info">
+
+    <h2>
+        How to use the time card calculator
+    </h2>
+
+    <p>
+        Enter the time you started and finished work each day.
+        If you took an unpaid break, enter the number of minutes
+        you were not working.
+    </p>
+
+    <p>
+        The calculator will subtract your unpaid breaks and
+        calculate your total weekly hours.
+    </p>
+
+    <p>
+        This calculator is intended as a general estimate.
+        Actual payroll calculations may depend on your employer's
+        timekeeping and applicable employment rules.
+    </p>
+
+</section>
+
+
+</main>
+
+
+
+<footer>
+
+    © 2026 OvertimeCheck
+
+</footer>
+
+
+
+<script>
+
+
+function getHours(start, end, breakMinutes) {
+
+    if (!start || !end) {
+        return 0;
+    }
+
+    let startParts = start.split(":");
+    let endParts = end.split(":");
+
+    let startMinutes =
+        parseInt(startParts[0]) * 60 +
+        parseInt(startParts[1]);
+
+    let endMinutes =
+        parseInt(endParts[0]) * 60 +
+        parseInt(endParts[1]);
+
+
+    if (endMinutes < startMinutes) {
+        endMinutes += 24 * 60;
+    }
+
+
+    let minutes =
+        endMinutes -
+        startMinutes -
+        breakMinutes;
+
+
+    if (minutes < 0) {
+        minutes = 0;
+    }
+
+
+    return minutes / 60;
+
+}
+
+
+
+function calculateHours() {
+
+
+    const days = [
+        "mon",
+        "tue",
+        "wed",
+        "thu",
+        "fri"
+    ];
+
+
+    let total = 0;
+
+
+    days.forEach(function(day) {
+
+
+        const start =
+            document.getElementById(
+                day + "Start"
+            ).value;
+
+
+        const end =
+            document.getElementById(
+                day + "End"
+            ).value;
+
+
+        const breakMinutes =
+            parseFloat(
+                document.getElementById(
+                    day + "Break"
+                ).value
+            ) || 0;
+
+
+        const hours =
+            getHours(
+                start,
+                end,
+                breakMinutes
+            );
+
+
+        total += hours;
+
+
+        document.getElementById(
+            day + "Result"
+        ).textContent =
+            hours.toFixed(2) +
+            " hours";
+
+    });
+
+
+    document.getElementById(
+        "totalResult"
+    ).textContent =
+        total.toFixed(2) +
+        " hours";
+
+
+    document.getElementById(
+        "results"
+    ).style.display =
+        "block";
+
+}
+
+
+
+function clearForm() {
+
+
+    const inputs =
+        document.querySelectorAll(
+            "input"
+        );
+
+
+    inputs.forEach(function(input) {
+
+        if (input.type === "time") {
+            input.value = "";
+        }
+
+        if (input.type === "number") {
+            input.value = "0";
+        }
+
+    });
+
+
+    document.getElementById(
+        "results"
+    ).style.display =
+        "none";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
